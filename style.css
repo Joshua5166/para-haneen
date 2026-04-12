@@ -221,12 +221,24 @@ header {
   background-color: rgba(0,0,0,0.9); /* Fondo negro semi-transparente */
 }
 
-/* El contenedor del video en el centro */
+/* Ajuste para que el modal se vea bien en celulares */
 .modal-content {
-  position: relative;
-  margin: 5% auto;
-  width: 80%;
-  max-width: 800px;
+    width: 90%;          /* Que no use el 100% para que respire a los lados */
+    max-width: 400px;    /* Pero que no se pase de 400px en pantallas grandes */
+    margin: 10% auto;    /* Centrado vertical y horizontal */
+    padding: 20px;
+    border-radius: 15px;
+    background: #fff;    /* O el color que estés usando */
+    max-height: 80vh;    /* Importante: que no sea más alto que el 80% de la pantalla */
+    overflow-y: auto;    /* Si el contenido es mucho, que permita hacer scroll adentro */
+}
+
+/* Ajuste para el video de YouTube dentro del modal */
+.modal-content iframe {
+    width: 100%;         /* Que el video ocupe todo el ancho del modal */
+    height: auto;
+    aspect-ratio: 16 / 9; /* Mantiene la proporción del video */
+    border-radius: 10px;
 }
 
 /* Botón para cerrar (X) */
