@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Soundtrack 🎵</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back-link">← Back to Menu</a>
+    <h1>Our Playlist 🎵</h1>
+    
+    <div class="song-form">
+      <input type="text" id="song-title" placeholder="Song Name (e.g. Our Favorite)">
+      <input type="text" id="youtube-link" placeholder="Paste YouTube Link here">
+      <button id="add-song" class="btn-secondary">Add to Playlist</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="songs-list" class="songs-grid">
+      </div>
+  </main>
+
+  <div id="video-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <div id="modal-video-body">
+        </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/songs.js"></script>
+</body>
+</html>
