@@ -8,10 +8,10 @@ const supabase = createClient(
 const songList = document.getElementById('songs-list');
 const addBtn = document.getElementById('add-song');
 
-// Referencias para el Modal
-const modal = document.getElementById('video-modal');
-const modalBody = document.getElementById('modal-video-body');
-const closeModal = document.querySelector('.close-modal');
+// Referencias del Modal (Coincidiendo con tu HTML)
+const modal = document.getElementById('songModal');
+const modalTitle = document.getElementById('modalTitle');
+const videoContainer = document.getElementById('videoContainer');
 
 // Función para extraer el ID de YouTube
 function getYouTubeID(url) {
@@ -33,24 +33,25 @@ async function loadSongs() {
   data.forEach(song => {
     const card = document.createElement('div');
     card.className = 'song-card';
-    // Usamos una miniatura y un icono de play en lugar del iframe directo
     card.innerHTML = `
       <h3>${song.titulo}</h3>
-      <div class="video-thumbnail" data-id="${song.youtube_id}">
-        <img src="https://img.youtube.com/vi/${song.youtube_id}/mqdefault.jpg" alt="Play Music">
+      <div class="video-thumbnail" data-id="${song.youtube_id}" data-title="${song.titulo}">
+        <img src="https://img.youtube.com/vi/${song.youtube_id}/mqdefault.jpg" alt="Play">
         <div class="play-overlay">▶</div>
       </div>
-      <button class="delete-btn" data-id="${song.id}" style="width:100%; margin-top:10px;">Remove Song</button>
+      <button class="delete-btn" data-id="${song.id}">Remove Song</button>
     `;
     songList.appendChild(card);
   });
 
-  // Evento para ABRIR el Modal al hacer clic en la miniatura
+  // Evento para ABRIR el Modal
   document.querySelectorAll('.video-thumbnail').forEach(thumb => {
     thumb.addEventListener('click', () => {
       const videoID = thumb.getAttribute('data-id');
-      // Insertamos el video con autoplay
-      modalBody.innerHTML = `
+      const title = thumb.getAttribute('data-title');
+      
+      modalTitle.innerText = title;
+      videoContainer.innerHTML = `
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/${videoID}?autoplay=1" frameborder="0" allowfullscreen allow="autoplay"></iframe>
         </div>`;
@@ -58,11 +59,11 @@ async function loadSongs() {
     });
   });
 
-  // Evento para BORRAR canciones
+  // Evento para BORRAR
   document.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       const id = e.target.getAttribute('data-id');
-      if(confirm("Remove this song from our playlist?")) {
+      if(confirm("Remove from playlist?")) {
         await supabase.from('canciones').delete().eq('id', id);
         loadSongs();
       }
@@ -77,40 +78,31 @@ addBtn.addEventListener('click', async () => {
   const videoID = getYouTubeID(linkInput.value);
 
   if (!titleInput.value || !videoID) {
-    alert("Please enter a title and a valid YouTube link ❤️");
+    alert("Please enter a title and a valid link ❤️");
     return;
   }
 
   const { error } = await supabase
     .from('canciones')
-    .insert([{ 
-      titulo: titleInput.value,
-      youtube_id: videoID 
-    }]);
+    .insert([{ titulo: titleInput.value, youtube_id: videoID }]);
 
   if (!error) {
     titleInput.value = '';
     linkInput.value = '';
     loadSongs();
-  } else {
-    alert("Error adding song to the database");
   }
 });
 
-// --- 3. LÓGICA PARA CERRAR EL MODAL ---
-// Usamos addEventListener para mejor respuesta en móviles
-closeModal.addEventListener('click', () => {
-  modal.style.display = "none";
-  modalBody.innerHTML = ""; // Limpiamos el video para que deje de sonar
-});
+// --- 3. LÓGICA PARA CERRAR (Global para que el onclick del HTML funcione) ---
+window.closeModal = function() {
+  modal.style.display = "none";
+  videoContainer.innerHTML = ""; 
+};
 
-// Cerrar si hace clic fuera del contenido (en el fondo oscuro)
-window.addEventListener('click', (event) => {
-  if (event.target == modal) {
-    modal.style.display = "none";
-    modalBody.innerHTML = "";
-  }
-});
+window.onclick = (event) => {
+  if (event.target == modal) {
+    closeModal();
+  }
+};
 
-// Arrancar cargando la lista
 loadSongs();
