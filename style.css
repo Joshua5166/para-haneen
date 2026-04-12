@@ -1,5 +1,5 @@
 /* =========================================
-   1. ESTILOS GENERALES Y HOME
+  1. ESTILOS GENERALES Y HOME
    ========================================= */
 * {
     box-sizing: border-box;
@@ -71,7 +71,7 @@ header {
 }
 
 /* =========================================
-   2. SECCIÓN DE FOTOS (COLLAGE)
+  2. SECCIÓN DE FOTOS (COLLAGE)
    ========================================= */
 .grid {
     margin: 0 auto;
@@ -112,7 +112,7 @@ header {
 }
 
 /* =========================================
-   3. SECCIÓN DE CANCIONES (PLAYLIST)
+  3. SECCIÓN DE CANCIONES (PLAYLIST)
    ========================================= */
 .song-form {
     background: white;
@@ -212,10 +212,10 @@ header {
 }
 
 /* =========================================
-   4. VENTANA EMERGENTE (MODAL)
+  4. VENTANA EMERGENTE (MODAL)
    ========================================= */
 #video-modal {
-    display: none;
+    display: none; /* ¡Súper importante! */
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -226,26 +226,29 @@ header {
     backdrop-filter: blur(8px);
 }
 
+/* 2. Ajuste del cuadrito blanco (el "recuadro horrible") */
 .modal-content {
     background-color: #fff;
-    margin: 10vh auto;
-    padding: 20px;
+    margin: 15vh auto; /* Lo baja un poco más para que no choque arriba */
+    padding: 25px;
     width: 90%;
     max-width: 500px;
     border-radius: 20px;
     position: relative;
-    box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    text-align: center;
 }
 
+/* 3. La X de cerrar dentro del cuadro blanco */
 .close-modal {
     position: absolute;
-    top: -45px;
-    right: 0;
-    color: white;
-    font-size: 45px;
+    top: 10px;
+    right: 15px;
+    color: #ff4d94; /* Rosa para que combine */
+    font-size: 30px;
     font-weight: bold;
     cursor: pointer;
-    padding: 5px;
+    line-height: 1;
 }
 
 .video-container {
@@ -263,7 +266,7 @@ header {
 }
 
 /* =========================================
-   5. DISEÑO RESPONSIVO (IPHONE / CELULARES)
+  5. DISEÑO RESPONSIVO (IPHONE / CELULARES)
    ========================================= */
 
 /* Tablets */
