@@ -1,321 +1,287 @@
-/* Contenedor del collage */
-.grid {
-  margin: 0 auto;
-  width: 95%; /* Usamos casi todo el ancho */
-  max-width: 1400px;
+/* =========================================
+   1. ESTILOS GENERALES Y HOME
+   ========================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-/* Tarjetas de fotos: Ahora el ancho cambia según la pantalla */
-.photo-card {
-  width: calc(25% - 15px); /* 4 columnas en PC por defecto */
-  margin-bottom: 20px;
-  background: white;
-  padding: 10px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  float: left;
-}
-
-/* Efecto al pasar el mouse */
-.photo-card:hover {
-  transform: translateY(-5px);
-}
-
-.photo-card img {
-  width: 100%;
-  height: auto; /* IMPORTANTE: Mantiene la proporción de la foto */
-  object-fit: cover; /* Esto hace que todas las fotos encajen bien */
-  border-radius: 5px;
-}
-
-.photo-card p {
-  text-align: center;
-  font-style: italic;
-  color: #666;
-  margin-top: 10px;
-}
 .home-bg {
-  background: linear-gradient(135deg, #fff5f8 0%, #ffe4ec 100%);
-  min-height: 100vh;
+    background: linear-gradient(135deg, #fff5f8 0%, #ffe4ec 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .welcome-container {
-  text-align: center;
-  padding: 50px 20px;
+    text-align: center;
+    padding: 50px 20px;
 }
 
 .main-menu {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 50px;
-  flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 50px;
+    flex-wrap: wrap;
 }
 
 .menu-card {
-  background: white;
-  text-decoration: none;
-  color: #444;
-  padding: 40px;
-  border-radius: 20px;
-  width: 250px;
-  box-shadow: 0 10px 25px rgba(255, 77, 148, 0.15);
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+    background: white;
+    text-decoration: none;
+    color: #444;
+    padding: 40px;
+    border-radius: 20px;
+    width: 250px;
+    box-shadow: 0 10px 25px rgba(255, 77, 148, 0.15);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    text-align: center;
 }
 
 .menu-card:hover {
-  transform: translateY(-10px);
-  border-color: #ff4d94;
+    transform: translateY(-10px);
+    border-color: #ff4d94;
 }
 
 .menu-card .icon {
-  font-size: 50px;
-  margin-bottom: 15px;
+    font-size: 50px;
+    margin-bottom: 15px;
 }
 
-.back-link {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  color: #ff4d94;
-  text-decoration: none;
-  font-weight: bold;
-}
-/* Estilo para el encabezado de las subpáginas */
+/* Encabezado de subpáginas */
 header {
-  padding: 60px 20px 20px; /* Espacio para que el link de Back no estorbe */
-  text-align: center;
-  position: relative;
+    padding: 80px 20px 20px;
+    text-align: center;
+    position: relative;
 }
 
 .back-link {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  color: #ff4d94;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 10px;
-  border-radius: 10px;
-  background: white;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #ff4d94;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 10;
 }
 
-/* Botón de eliminar para las fotos */
-.delete-btn {
-  background: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-  font-size: 0.8rem;
+/* =========================================
+   2. SECCIÓN DE FOTOS (COLLAGE)
+   ========================================= */
+.grid {
+    margin: 0 auto;
+    width: 95%;
+    max-width: 1400px;
+    display: block;
+    overflow: hidden; /* Para contener los floats */
 }
 
-.delete-btn:hover {
-  background: #cc0000;
+.photo-card {
+    width: calc(25% - 15px); /* 4 columnas en PC */
+    margin-bottom: 20px;
+    margin-right: 15px;
+    background: white;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    float: left;
+    transition: transform 0.3s ease;
 }
 
-/* Contenedor de la lista de canciones */
-.songs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Columnas automáticas */
-  gap: 30px;
-  padding: 40px;
-  max-width: 1200px;
-  margin: 0 auto; /* Centra todo el bloque en la pantalla */
+.photo-card:hover {
+    transform: translateY(-5px);
 }
 
-/* Tarjeta de cada canción */
-.song-card {
-  background: white;
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centra el contenido dentro de la tarjeta */
+.photo-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    display: block;
 }
 
-.song-card:hover {
-  transform: translateY(-5px);
+.photo-card p {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+    margin-top: 10px;
 }
 
-.song-card h3 {
-  margin-bottom: 15px;
-  color: #ff4d94;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: center;
-}
-
-/* Contenedor del video para que mantenga proporción 16:9 */
-.video-container {
-  width: 100%;
-  position: relative;
-  padding-bottom: 56.25%; 
-  height: 0;
-  overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.video-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* Estilo del botón Remove dentro de la tarjeta */
-.song-card .delete-btn {
-  margin-top: 15px;
-  width: 100%;
-  padding: 10px;
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.song-card .delete-btn:hover {
-  background-color: #cc0000;
-}
-
-/* Estilo para los inputs de arriba */
+/* =========================================
+   3. SECCIÓN DE CANCIONES (PLAYLIST)
+   ========================================= */
 .song-form {
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  display: inline-flex;
-  gap: 10px;
-  box-shadow: 0 4px 15px rgba(255, 77, 148, 0.1);
-  margin-bottom: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    display: inline-flex;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(255, 77, 148, 0.1);
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .song-form input {
-  padding: 10px 15px;
-  border: 1px solid #ffe4ec;
-  border-radius: 8px;
-  outline: none;
+    padding: 10px 15px;
+    border: 1px solid #ffe4ec;
+    border-radius: 8px;
+    outline: none;
 }
 
 .song-form input:focus {
-  border-color: #ff4d94;
-}
-/* El fondo oscuro */
-.modal {
-  display: none; 
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.9); /* Fondo negro semi-transparente */
+    border-color: #ff4d94;
 }
 
-/* Ajuste para que el modal se vea bien en celulares */
-.modal-content {
-    width: 90%;          /* Que no use el 100% para que respire a los lados */
-    max-width: 400px;    /* Pero que no se pase de 400px en pantallas grandes */
-    margin: 10% auto;    /* Centrado vertical y horizontal */
+.songs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.song-card {
+    background: white;
     padding: 20px;
-    border-radius: 15px;
-    background: #fff;    /* O el color que estés usando */
-    max-height: 80vh;    /* Importante: que no sea más alto que el 80% de la pantalla */
-    overflow-y: auto;    /* Si el contenido es mucho, que permita hacer scroll adentro */
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Ajuste para el video de YouTube dentro del modal */
-.modal-content iframe {
-    width: 100%;         /* Que el video ocupe todo el ancho del modal */
-    height: auto;
-    aspect-ratio: 16 / 9; /* Mantiene la proporción del video */
-    border-radius: 10px;
-}
-
-/* Botón para cerrar (X) */
-.close-modal {
-  position: absolute;
-  top: -40px;
-  right: 0;
-  color: white;
-  font-size: 40px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close-modal:hover { color: #ff4d94; }
 .video-thumbnail {
-  position: relative;
-  width: 100%;
-  cursor: pointer;
-  border-radius: 12px;
-  overflow: hidden;
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .video-thumbnail img {
-  width: 100%;
-  display: block;
-  transition: transform 0.3s;
-}
-
-.video-thumbnail:hover img {
-  transform: scale(1.05);
+    width: 100%;
+    display: block;
+    transition: transform 0.3s;
 }
 
 .play-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 40px;
-  color: white;
-  background: rgba(255, 77, 148, 0.7); /* Rosa romántico */
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity 0.3s;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: white;
+    background: rgba(255, 77, 148, 0.7);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
 .video-thumbnail:hover .play-overlay {
-  opacity: 1;
-}
-/* Para celulares */
-@media (max-width: 768px) {
-  .photo-card {
-    width: calc(50% - 10px); /* 2 columnas en celular */
-  }
-}
-/* --- RESPONSIVE DESIGN (Para que no se vea vacío) --- */
-
-/* Pantallas grandes (Monitores) - 5 columnas */
-@media (min-width: 1600px) {
-  .photo-card { width: calc(20% - 15px); }
+    opacity: 1;
 }
 
-/* Tablets o laptops pequeñas - 3 columnas */
+/* Botones de eliminar */
+.delete-btn {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: bold;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+.delete-btn:hover {
+    background: #cc0000;
+}
+
+/* =========================================
+   4. VENTANA EMERGENTE (MODAL)
+   ========================================= */
+#video-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10vh auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+}
+
+.close-modal {
+    position: absolute;
+    top: -45px;
+    right: 0;
+    color: white;
+    font-size: 45px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+}
+
+/* =========================================
+   5. DISEÑO RESPONSIVO (IPHONE / CELULARES)
+   ========================================= */
+
+/* Tablets */
 @media (max-width: 1024px) {
-  .photo-card { width: calc(33.333% - 15px); }
+    .photo-card { width: calc(33.333% - 15px); }
 }
 
-/* Celulares grandes - 2 columnas */
+/* Celulares */
 @media (max-width: 768px) {
-  .photo-card { width: calc(50% - 10px); }
+    .photo-card { width: calc(50% - 10px); margin-right: 10px; }
+    .menu-card { width: 90%; padding: 25px; }
+    .song-form { flex-direction: column; width: 90%; }
+    .song-form input { width: 100%; }
 }
 
-/* Celulares pequeños - 1 columna */
+/* Celulares pequeños (iPhone SE / Vertical) */
 @media (max-width: 480px) {
-  .photo-card { width: 100%; margin-left: 0; }
+    .photo-card { width: 100%; margin-right: 0; }
+    .modal-content { margin: 20vh auto; }
+    .songs-grid { padding: 15px; }
 }

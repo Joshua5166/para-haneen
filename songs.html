@@ -23,13 +23,14 @@
       </div>
   </main>
 
-  <div id="video-modal" class="modal">
+  <div id="songModal" class="modal">
     <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <div id="modal-video-body">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        
+        <h2 id="modalTitle"></h2>
+        <div id="videoContainer"></div>
         </div>
-    </div>
-  </div>
+</div>
 
   <script type="module" src="/src/songs.js"></script>
 </body>

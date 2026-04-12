@@ -98,18 +98,19 @@ addBtn.addEventListener('click', async () => {
 });
 
 // --- 3. LÓGICA PARA CERRAR EL MODAL ---
-closeModal.onclick = () => {
-  modal.style.display = "none";
-  modalBody.innerHTML = ""; // Limpiamos el video para que deje de sonar
-};
+// Usamos addEventListener para mejor respuesta en móviles
+closeModal.addEventListener('click', () => {
+  modal.style.display = "none";
+  modalBody.innerHTML = ""; // Limpiamos el video para que deje de sonar
+});
 
-// Cerrar si hace clic fuera del contenido blanco
-window.onclick = (event) => {
-  if (event.target == modal) {
-    modal.style.display = "none";
-    modalBody.innerHTML = "";
-  }
-};
+// Cerrar si hace clic fuera del contenido (en el fondo oscuro)
+window.addEventListener('click', (event) => {
+  if (event.target == modal) {
+    modal.style.display = "none";
+    modalBody.innerHTML = "";
+  }
+});
 
 // Arrancar cargando la lista
 loadSongs();
