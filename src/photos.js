@@ -85,7 +85,7 @@ uploadBtn.addEventListener('click', async () => {
         formData.append('upload_preset', 'tus_fotos_preset'); 
 
         try {
-            const res = await fetch('https://api.cloudinary.com/v1_1/tu_cloud_name/image/upload', {
+            const res = await fetch('https://api.cloudinary.com/v1_1/dgtnqy7zn/image/upload', {
                 method: 'POST',
                 body: formData
             });
