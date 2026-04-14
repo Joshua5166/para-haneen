@@ -1,25 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Memories 📸</title>
-  <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestros Momentos 📸</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
-<body>
-  <header>
-    <a href="index.html" class="back-link">← Back to Menu</a>
-    <h1>Our Photo Gallery</h1>
-    <button id="upload-widget" class="btn-primary">Upload New Memory</button>
-  </header>
+<body class="home-bg">
+    <header>
+        <a href="index.html" class="back-link">← Volver al Menú</a>
+        <h1>Nuestra Galería 📸</h1>
+        
+        <div class="upload-section">
+            <input type="file" id="file-input" accept="image/*" multiple>
+            
+            <select id="category-select">
+                <option value="Us">Us (Juntos)</option>
+                <option value="Roblox">Roblox</option>
+                <option value="Haneen">Haneen</option>
+                <option value="Josh">Josh</option>
+            </select>
+            
+            <button id="upload-btn">Subir Fotos</button>
+        </div>
 
-  <main>
-    <div id="photo-collage" class="grid">
-      </div>
-  </main>
-  <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-  <script type="module" src="/src/photos.js"></script>
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">Todas</button>
+            <button class="filter-btn" data-filter="Us">Us</button>
+            <button class="filter-btn" data-filter="Roblox">Roblox</button>
+            <button class="filter-btn" data-filter="Haneen">Haneen</button>
+            <button class="filter-btn" data-filter="Josh">Josh</button>
+        </div>
+    </header>
+
+    <main>
+        <div id="photo-grid" class="grid"></div>
+    </main>
+
+    <script type="module" src="/src/photos.js"></script>
 </body>
 </html>
