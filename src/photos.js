@@ -82,7 +82,7 @@ uploadBtn.addEventListener('click', async () => {
         const formData = new FormData();
         formData.append('file', files[i]);
         // CAMBIA ESTO POR TUS DATOS REALES DE CLOUDINARY
-        formData.append('upload_preset', 'tus_fotos_preset'); 
+        formData.append('upload_preset', 'ml_default_hj'); 
 
         try {
             const res = await fetch('https://api.cloudinary.com/v1_1/dgtnqy7zn/image/upload', {
