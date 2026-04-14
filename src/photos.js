@@ -28,7 +28,9 @@ async function loadPhotos(filter = 'all') {
     }
 
     data.forEach(foto => {
+        // Fallback to 'Us' if category is null
         const catLabel = foto.categoria || 'Us';
+        
         const card = document.createElement('div');
         card.className = `photo-card`;
         card.innerHTML = `
@@ -46,14 +48,24 @@ async function loadPhotos(filter = 'all') {
         photoGrid.appendChild(card);
     });
 
-    // Event: Update Category
+    // Event: Quick category update from the card
     document.querySelectorAll('.edit-category').forEach(select => {
         select.onchange = async (e) => {
+            const id = e.target.dataset.id;
+            const newCategory = e.target.value;
+
             const { error } = await supabase
                 .from('fotos')
-                .update({ categoria: e.target.value })
-                .eq('id', e.target.dataset.id);
-            if (!error) loadPhotos(document.querySelector('.filter-btn.active').dataset.filter);
+                .update({ categoria: newCategory })
+                .eq('id', id);
+
+            if (error) {
+                alert("Error moving photo");
+            } else {
+                // Refresh the current view
+                const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
+                loadPhotos(currentFilter);
+            }
         };
     });
 
@@ -61,14 +73,17 @@ async function loadPhotos(filter = 'all') {
     document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.onclick = async () => {
             if(confirm("Are you sure you want to delete this memory?")) {
-                await supabase.from('fotos').delete().eq('id', btn.dataset.id);
-                loadPhotos(document.querySelector('.filter-btn.active').dataset.filter);
+                const { error } = await supabase.from('fotos').delete().eq('id', btn.dataset.id);
+                if (!error) {
+                    const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
+                    loadPhotos(currentFilter);
+                }
             }
         };
     });
 }
 
-// --- 2. MULTIPLE UPLOAD ---
+// --- 2. MULTIPLE UPLOAD TO CLOUDINARY & SUPABASE ---
 uploadBtn.addEventListener('click', async () => {
     const files = fileInput.files;
     const selectedCategory = categorySelect.value;
@@ -81,8 +96,7 @@ uploadBtn.addEventListener('click', async () => {
     for (let i = 0; i < files.length; i++) {
         const formData = new FormData();
         formData.append('file', files[i]);
-        // CAMBIA ESTO POR TUS DATOS REALES DE CLOUDINARY
-        formData.append('upload_preset', 'ml_default_hj'); 
+        formData.append('upload_preset', 'ml_default_hj'); // Your verified preset
 
         try {
             const res = await fetch('https://api.cloudinary.com/v1_1/dgtnqy7zn/image/upload', {
@@ -92,24 +106,28 @@ uploadBtn.addEventListener('click', async () => {
             const fileData = await res.json();
 
             if (fileData.secure_url) {
+                // Inserting only existing columns in your Supabase table
                 await supabase.from('fotos').insert([{
                     url: fileData.secure_url,
-                    public_id: fileData.public_id,
-                    categoria: selectedCategory 
+                    categoria: selectedCategory,
+                    descripcion: 'A special memory'
                 }]);
             }
         } catch (err) {
-            console.error("Upload error:", err);
+            console.error("Upload error at index " + i, err);
         }
     }
 
     uploadBtn.innerText = "Upload Photos";
     uploadBtn.disabled = false;
     fileInput.value = '';
-    loadPhotos();
+    
+    // Refresh to show new photos in the 'all' or selected filter
+    const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+    loadPhotos(activeFilter);
 });
 
-// --- 3. FILTERS ---
+// --- 3. FILTER BUTTONS LOGIC ---
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -118,4 +136,5 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     });
 });
 
+// Initial load
 loadPhotos();
