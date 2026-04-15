@@ -1,5 +1,5 @@
 /* =========================================
-   1. ESTILOS GENERALES
+   1. ESTILOS GENERALES Y VARIABLES
    ========================================= */
 * {
     box-sizing: border-box;
@@ -8,17 +8,24 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background: linear-gradient(135deg, #fff5f8 0%, #ffe4ec 100%);
     min-height: 100vh;
     color: #444;
+    line-height: 1.6;
 }
 
-/* Encabezado y Navegación */
+/* Encabezado */
 header {
-    padding: 80px 20px 20px;
+    padding: 80px 20px 40px;
     text-align: center;
     position: relative;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
 }
 
 .back-link {
@@ -31,341 +38,277 @@ header {
     padding: 10px 15px;
     border-radius: 10px;
     background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     z-index: 10;
+    transition: 0.3s;
+}
+
+.back-link:hover {
+    background: #ff4d94;
+    color: white;
 }
 
 /* =========================================
-   2. MENÚ PRINCIPAL (INDEX)
+   2. MENÚ PRINCIPAL (INDEX) - ESTILO UNIFICADO
    ========================================= */
-.welcome-container {
-    text-align: center;
-    padding: 50px 20px;
-}
-
 .main-menu {
     display: flex;
     justify-content: center;
     gap: 30px;
-    margin-top: 50px;
+    margin-top: 30px;
     flex-wrap: wrap;
+    padding: 20px;
 }
 
 .menu-card {
     background: white;
     text-decoration: none;
     color: #444;
-    padding: 40px;
-    border-radius: 20px;
-    width: 250px;
-    box-shadow: 0 10px 25px rgba(255, 77, 148, 0.15);
-    transition: all 0.3s ease;
+    padding: 40px 25px;
+    border-radius: 25px;
+    width: 280px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 2px solid transparent;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .menu-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-12px);
     border-color: #ff4d94;
+    box-shadow: 0 15px 35px rgba(255, 77, 148, 0.15);
 }
 
 .menu-card .icon {
-    font-size: 50px;
-    display: block;
-    margin-bottom: 10px;
-}
-
-/* =========================================
-   3. SECCIÓN DE FOTOS (COLLAGE MASONRY)
-   ========================================= */
-.grid {
-    margin: 0 auto;
-    width: 95%;
-    max-width: 1400px;
-}
-
-.photo-card {
-    width: calc(25% - 15px); /* 4 columnas en PC */
+    font-size: 60px;
     margin-bottom: 20px;
-    background: white;
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    display: inline-block; /* Mejor que float para Masonry simple */
-    vertical-align: top;
-    margin-right: 10px;
-    transition: transform 0.3s ease;
-}
-
-.photo-card:hover {
-    transform: translateY(-5px);
-}
-
-.photo-card img {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
     display: block;
 }
 
-.photo-card p {
-    text-align: center;
-    font-style: italic;
-    color: #666;
-    margin-top: 10px;
+.menu-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.menu-card p {
+    font-size: 0.9rem;
+    color: #777;
 }
 
 /* =========================================
-   4. PLAYLIST Y CANCIONES
+   3. SECCIÓN DE SUBIDA (FORMULARIOS)
    ========================================= */
-.song-form {
+.upload-section {
     background: white;
-    padding: 20px;
-    border-radius: 15px;
+    padding: 25px;
+    border-radius: 20px;
     display: inline-flex;
-    gap: 10px;
-    box-shadow: 0 4px 15px rgba(255, 77, 148, 0.1);
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.song-form input {
-    padding: 10px 15px;
-    border: 1px solid #ffe4ec;
-    border-radius: 8px;
-    outline: none;
-}
-
-.songs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
-    padding: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.song-card {
-    background: white;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease;
-}
-
-.video-thumbnail {
-    position: relative;
-    width: 100%;
-    cursor: pointer;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.video-thumbnail img {
-    width: 100%;
-    display: block;
-}
-
-.play-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 40px;
-    color: white;
-    background: rgba(255, 77, 148, 0.7);
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.video-thumbnail:hover .play-overlay {
-    opacity: 1;
-}
-
-.delete-btn {
-    background: #ff4d4d;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-top: 15px;
-    width: 100%;
-    font-weight: bold;
-}
-
-/* =========================================
-   5. MODAL (VENTANA EMERGENTE)
-   ========================================= */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.85);
-    backdrop-filter: blur(8px);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 15vh auto;
-    padding: 30px 20px 20px;
-    width: 90%;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    margin-bottom: 40px;
     max-width: 500px;
-    border-radius: 20px;
-    position: relative;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    text-align: center;
+    width: 90%;
 }
 
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    color: #ff4d94;
-    font-size: 30px;
-    font-weight: bold;
-    cursor: pointer;
-    line-height: 1;
-}
-
-.video-container {
-    position: relative;
-    padding-bottom: 56.25%;
-    height: 0;
-    overflow: hidden;
-    border-radius: 12px;
-}
-
-.video-container iframe {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-}
-/* Controles de la tarjeta (Editar y Borrar) */
-.card-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-    gap: 5px;
-}
-
-.edit-category {
-    font-size: 0.75rem;
-    padding: 4px;
-    border-radius: 5px;
+.upload-section input, 
+.upload-section select, 
+.upload-section textarea {
+    padding: 12px;
     border: 1px solid #ffe4ec;
-    color: #ff4d94;
-    background: white;
+    border-radius: 10px;
     outline: none;
-    cursor: pointer;
-    flex-grow: 1;
+    font-family: inherit;
 }
 
-.edit-category:focus {
-    border-color: #ff4d94;
-}
-
-/* El botón de borrar ahora es parte de los controles */
-.photo-card .delete-btn {
-    background: #ff4d4d;
+.upload-section button {
+    background: #ff4d94;
     color: white;
     border: none;
-    border-radius: 5px;
-    padding: 4px 8px;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
     cursor: pointer;
-    font-size: 0.8rem;
     transition: 0.3s;
 }
 
-.photo-card .delete-btn:hover {
-    background: #cc0000;
+.upload-section button:hover {
+    background: #e63982;
 }
-.movie-grid {
+
+/* =========================================
+   4. GALERÍA DE FOTOS (Filtros y Grid)
+   ========================================= */
+.filter-bar {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 1px solid #ff4d94;
+    background: white;
+    color: #ff4d94;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background: #ff4d94;
+    color: white;
+}
+
+.grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
     padding: 20px;
 }
 
+.photo-card {
+    background: white;
+    padding: 12px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: 0.3s;
+}
+
+.photo-card img {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+}
+
+/* =========================================
+   5. CINEMA (Estilo Netflix)
+   ========================================= */
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 25px;
+    padding: 30px;
+}
+
 .movie-card {
     position: relative;
-    border-radius: 8px;
+    border-radius: 15px;
     overflow: hidden;
-    transition: transform 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    cursor: pointer;
+    background: #000;
+    transition: 0.4s;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    aspect-ratio: 2/3;
 }
 
 .movie-card:hover {
-    transform: scale(1.05);
-    z-index: 10;
+    transform: scale(1.08);
 }
 
 .movie-card img {
     width: 100%;
-    height: 240px;
+    height: 100%;
     object-fit: cover;
-    display: block;
 }
 
 .movie-info {
     position: absolute;
     bottom: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.9));
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.9) 70%);
     color: white;
-    width: 100%;
-    padding: 10px;
-    font-size: 0.8rem;
+    padding: 15px;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: 0.3s;
+    text-align: center;
 }
 
 .movie-card:hover .movie-info {
     opacity: 1;
 }
 
-.rating-stars {
-    color: #ff4d94;
-    margin-bottom: 5px;
-}
+.rating-stars { color: #ffd700; margin-bottom: 5px; }
 
-/* Ejemplo si usas clases específicas */
-.menu-card:nth-child(3) { 
-    background: linear-gradient(135deg, #e50914 0%, #b20710 100%); /* Rojo Netflix */
-    color: white;
-}
-/* Ajustes para móviles */
-@media (max-width: 480px) {
-    .edit-category {
-        font-size: 0.7rem;
-    }
-}
 /* =========================================
-6. RESPONSIVO (MÓVIL)
+   6. CANCIONES (PLAYLIST)
    ========================================= */
-@media (max-width: 1024px) {
-    .photo-card { width: calc(33.333% - 15px); }
+.songs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 20px;
 }
 
+.song-card {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+}
+
+.video-thumbnail {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.play-overlay {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 77, 148, 0.85);
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+}
+
+/* =========================================
+   7. MODAL Y CONTROLES
+   ========================================= */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    backdrop-filter: blur(5px);
+}
+
+.card-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 8px;
+}
+
+.delete-btn, .delete-movie {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* =========================================
+   8. RESPONSIVO (MÓVIL)
+   ========================================= */
 @media (max-width: 768px) {
-    .photo-card { width: calc(50% - 15px); }
-    .menu-card { width: 90%; }
-    .song-form { flex-direction: column; width: 90%; margin: 0 auto 30px; }
-}
-
-@media (max-width: 480px) {
-    .photo-card { width: 100%; margin-right: 0; }
-    .modal-content { margin: 25vh auto; }
+    .main-menu { gap: 15px; }
+    .menu-card { width: 100%; max-width: 320px; padding: 25px; }
+    h1 { font-size: 1.8rem; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 }
