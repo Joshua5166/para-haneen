@@ -1,42 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Soundtrack 🎵</title>
-  <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Soundtrack 🎵</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
-<body>
-<header>
-    <a href="index.html" class="back-link">← Back</a>
-    <h1>Our Soundtrack 🎵</h1>
-    
-    <div class="songs-controls">
-        <div class="search-wrapper">
-            <input type="text" id="song-search" placeholder="Search a memory... 🔍">
-        </div>
-        <button id="random-song-btn" class="glass-btn">Surprise Me! 🎲</button>
-    </div>
-
-    <div class="upload-section glass-card">
-        <input type="text" id="song-url" placeholder="Paste YouTube Link here...">
-        <button id="add-song-btn">Add to Playlist</button>
-    </div>
-</header>
-
-<main>
-    <div id="songs-grid" class="songs-grid"></div>
-</main>
-
-  <div id="songModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeModal()">&times;</span>
+<body class="home-bg"> <header>
+        <a href="index.html" class="back-link">← Back</a>
+        <h1>Our Soundtrack 🎵</h1>
         
-        <h2 id="modalTitle"></h2>
-        <div id="videoContainer"></div>
+        <div class="songs-controls">
+            <div class="search-wrapper">
+                <input type="text" id="song-search" placeholder="Search a memory... 🔍">
+            </div>
+            <button id="random-song-btn" class="glass-btn">Surprise Me! 🎲</button>
         </div>
-</div>
 
-  <script type="module" src="/src/songs.js"></script>
+        <div class="upload-section glass-card">
+            <input type="text" id="song-title-input" placeholder="Song Name (e.g. A Thousand Years)">
+            <input type="text" id="song-url-input" placeholder="Paste YouTube Link here...">
+            <button id="add-song-btn">Add to Playlist</button>
+        </div>
+    </header>
+
+    <main>
+        <div id="songs-grid" class="songs-grid"></div>
+    </main>
+
+    <div id="songModal" class="modal">
+        <div class="modal-content glass-card"> <span class="close-button" id="close-modal-btn">&times;</span>
+            <h2 id="modalTitle" style="margin-bottom: 15px; color: #ff4d94;"></h2>
+            <div id="videoContainer" class="video-container"></div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/songs.js"></script>
 </body>
 </html>
