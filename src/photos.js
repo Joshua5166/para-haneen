@@ -28,7 +28,6 @@ async function loadPhotos(filter = 'all') {
     }
 
     data.forEach(foto => {
-        // Fallback to 'Us' if category is null
         const catLabel = foto.categoria || 'Us';
         
         const card = document.createElement('div');
@@ -41,6 +40,7 @@ async function loadPhotos(filter = 'all') {
                     <option value="Roblox" ${catLabel === 'Roblox' ? 'selected' : ''}>Roblox</option>
                     <option value="Haneen" ${catLabel === 'Haneen' ? 'selected' : ''}>Haneen</option>
                     <option value="Josh" ${catLabel === 'Josh' ? 'selected' : ''}>Josh</option>
+                    <option value="Movies" ${catLabel === 'Movies' ? 'selected' : ''}>Movies 🍿</option> 
                 </select>
                 <button class="delete-btn" data-id="${foto.id}">Delete</button>
             </div>
