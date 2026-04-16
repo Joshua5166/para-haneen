@@ -31,18 +31,23 @@ async function loadSongs() {
 
   songList.innerHTML = '';
   data.forEach(song => {
+    const videoId = song.url.split('v=')[1]?.split('&')[0];
+    const thumbUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`; 
+
     const card = document.createElement('div');
     card.className = 'song-card';
     card.innerHTML = `
-      <h3>${song.titulo}</h3>
-      <div class="video-thumbnail" data-id="${song.youtube_id}" data-title="${song.titulo}">
-        <img src="https://img.youtube.com/vi/${song.youtube_id}/mqdefault.jpg" alt="Play">
-        <div class="play-overlay">▶</div>
-      </div>
-      <button class="delete-btn" data-id="${song.id}">Remove Song</button>
+        <div class="video-thumbnail" onclick="openModal('${song.url}')">
+            <img src="${thumbUrl}" alt="Thumbnail" onerror="this.src='https://img.youtube.com/vi/${videoId}/mqdefault.jpg'">
+            <div class="play-overlay">▶</div>
+        </div>
+        <div class="song-footer">
+            <span class="song-title">Memoria Musical</span>
+            <button class="delete-song-btn" data-id="${song.id}" title="Remove song">&times;</button>
+        </div>
     `;
-    songList.appendChild(card);
-  });
+    songsGrid.appendChild(card);
+});
 
   // Evento para ABRIR el Modal
   document.querySelectorAll('.video-thumbnail').forEach(thumb => {

@@ -206,7 +206,115 @@ header {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease;
 }
+/* Controles de búsqueda y botones */
+.songs-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px auto;
+    flex-wrap: wrap;
+}
 
+.search-wrapper {
+    position: relative;
+    width: 300px;
+}
+
+#song-search {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    outline: none;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 77, 148, 0.1);
+}
+
+#song-search:focus {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 20px rgba(255, 77, 148, 0.2);
+}
+
+.glass-btn {
+    background: rgba(255, 77, 148, 0.8);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    backdrop-filter: blur(5px);
+    transition: 0.3s;
+}
+
+.glass-btn:hover {
+    transform: scale(1.05);
+    background: #ff4d94;
+}
+
+/* Tarjetas de canciones Glassmorphism */
+.song-card {
+    background: rgba(255, 255, 255, 0.4); /* Transparencia */
+    backdrop-filter: blur(12px); /* Efecto borroso */
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px;
+    border-radius: 25px;
+    box-shadow: 0 8px 32px rgba(255, 77, 148, 0.1);
+    transition: all 0.4s ease;
+}
+
+.song-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 12px 40px rgba(255, 77, 148, 0.2);
+}
+
+.video-thumbnail {
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Pie de la tarjeta (Título y borrar) */
+.song-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 5px 0;
+}
+
+.song-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ff4d94;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.delete-song-btn {
+    background: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.delete-song-btn:hover {
+    background: #ff4d4d;
+    color: white;
+    transform: rotate(90deg);
+}
 .video-thumbnail {
     position: relative;
     width: 100%;

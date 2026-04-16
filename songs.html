@@ -7,21 +7,26 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <header>
-    <a href="index.html" class="back-link">← Back to Menu</a>
-    <h1>Our Playlist 🎵</h1>
+<header>
+    <a href="index.html" class="back-link">← Back</a>
+    <h1>Our Soundtrack 🎵</h1>
     
-    <div class="song-form">
-      <input type="text" id="song-title" placeholder="Song Name (e.g. Our Favorite)">
-      <input type="text" id="youtube-link" placeholder="Paste YouTube Link here">
-      <button id="add-song" class="btn-secondary">Add to Playlist</button>
+    <div class="songs-controls">
+        <div class="search-wrapper">
+            <input type="text" id="song-search" placeholder="Search a memory... 🔍">
+        </div>
+        <button id="random-song-btn" class="glass-btn">Surprise Me! 🎲</button>
     </div>
-  </header>
 
-  <main>
-    <div id="songs-list" class="songs-grid">
-      </div>
-  </main>
+    <div class="upload-section glass-card">
+        <input type="text" id="song-url" placeholder="Paste YouTube Link here...">
+        <button id="add-song-btn">Add to Playlist</button>
+    </div>
+</header>
+
+<main>
+    <div id="songs-grid" class="songs-grid"></div>
+</main>
 
   <div id="songModal" class="modal">
     <div class="modal-content">
