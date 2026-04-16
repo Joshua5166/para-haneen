@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Clips 🎬</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body class="home-bg">
+    <header>
+        <a href="index.html" class="back-link">← Back</a>
+        <h1>Our Moments 🎬</h1>
+        
+        <div class="upload-section">
+            <input type="file" id="video-input" accept="video/*">
+            <button id="upload-video-btn">Upload Video</button>
+        </div>
+    </header>
+
+    <main>
+        <div id="video-grid" class="grid"></div>
+    </main>
+
+    <script type="module" src="/src/videos.js"></script>
+</body>
+</html>
