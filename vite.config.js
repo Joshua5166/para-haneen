@@ -7,6 +7,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         photos: resolve(__dirname, 'photos.html'),
+        videos: resolve(__dirname, 'videos.html'),
         songs: resolve(__dirname, 'songs.html'),
       },
     },
