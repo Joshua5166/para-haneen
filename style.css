@@ -121,12 +121,12 @@ header {
 }
 
 .grid {
-    column-count: 4; /* Efecto collage estilo Pinterest */
-    column-gap: 20px;
-    width: 95%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 20px;
+    width: 100%;
+    min-height: 200px; /* Para que el contenedor siempre tenga espacio */
 }
 
 .photo-card {
@@ -136,11 +136,10 @@ header {
     transition: transform 0.3s ease;
 }
 
-.photo-link img {
-    width: 100%;
+.photo-link {
     display: block;
-    border-radius: 8px; /* Ajusta a tu gusto */
-    transition: transform 0.3s ease;
+    width: 100%;
+    min-height: 150px; /* Evita que colapsen antes de cargar la imagen */
 }
 
 .photo-card:hover img {
