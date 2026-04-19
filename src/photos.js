@@ -10,20 +10,26 @@ const fileInput = document.getElementById('file-input');
 const uploadBtn = document.getElementById('upload-btn');
 const categorySelect = document.getElementById('category-select');
 
-let lightbox;
+// Variable global para controlar el lightbox
+let lightbox = null;
 
-// --- FUNCIÓN PARA INICIALIZAR EL VISUALIZADOR (LIGHTBOX) ---
+// --- FUNCIÓN PARA INICIALIZAR O REFRESCAR EL VISUALIZADOR (LIGHTBOX) ---
 function initLightbox() {
+    // Si ya existe, lo destruimos para limpiar memoria y eventos viejos
     if (lightbox) {
         lightbox.destroy();
     }
+    
+    // Creamos uno nuevo con la configuración para que se sienta como App
     lightbox = new PhotoSwipeLightbox({
         gallery: '#photo-grid',
         children: 'a.photo-link',
         pswpModule: PhotoSwipe,
-        // Configuración para que se sienta como una App
+        // Configuración de UI para que sea suave en móvil
+        showHideAnimationType: 'zoom',
         padding: { top: 20, bottom: 20, left: 20, right: 20 },
-        showHideAnimationType: 'zoom'
+        escKey: true,
+        arrowKeys: true
     });
     lightbox.init();
 }
@@ -45,7 +51,9 @@ async function loadPhotos(filter = 'all') {
     photoGrid.innerHTML = '';
     
     if (!data || data.length === 0) {
-        photoGrid.innerHTML = '<p style="text-align:center; color:#ff4d94; grid-column: 1/-1;">No memories found here yet ❤️</p>';
+        photoGrid.innerHTML = '<p style="text-align:center; color:#ff4d94; grid-column: 1/-1; padding: 50px;">No memories found here yet ❤️</p>';
+        // Incluso si no hay fotos, matamos el lightbox viejo si existe
+        if (lightbox) lightbox.destroy();
         return;
     }
 
@@ -54,7 +62,10 @@ async function loadPhotos(filter = 'all') {
         
         const card = document.createElement('div');
         card.className = `photo-card`;
-        // IMPORTANTE: El data-pswp-width/height permite que la imagen se abra correctamente
+        
+        // --- AQUÍ ESTÁ EL TRUCO PARA QUE NO SE ABRA EN OTRA PÁGINA ---
+        // 1. Aseguramos que el link <a> tenga la clase 'photo-link'
+        // 2. data-pswp-width/height genéricos para que PhotoSwipe los calcule al cargar
         card.innerHTML = `
             <a href="${foto.url}" 
                class="photo-link" 
@@ -77,10 +88,21 @@ async function loadPhotos(filter = 'all') {
         photoGrid.appendChild(card);
     });
 
-    // Conectar eventos (Borrar/Editar)
+    // 3. ¡BLINDAJE TOTAL! Prevenimos el comportamiento por defecto de TODOS los enlaces photo-link
+    // Esto asegura que NO se abran en otra pestaña.
+    document.querySelectorAll('.photo-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Si PhotoSwipe está cargado, prevenimos que el navegador maneje el clic
+            if (PhotoSwipe && PhotoSwipeLightbox) {
+                e.preventDefault();
+            }
+        });
+    });
+
+    // Conectar eventos de los nuevos elementos (cambiar categoría y borrar)
     setupCardEvents();
     
-    // Lanzar el visualizador con las nuevas fotos
+    // 4. Inicializar el visualizador DESPUÉS de haber blindado los links
     initLightbox();
 }
 
@@ -99,7 +121,9 @@ function setupCardEvents() {
     // Evento: Borrar Foto
     document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.onclick = async (e) => {
-            e.preventDefault(); // Evita que se abra la foto al hacer clic en el botón
+            // e.preventDefault() aquí es crucial para que al borrar no se abra la foto
+            e.preventDefault(); 
+            e.stopPropagation(); // Previene que el evento suba al link <a>
             if(confirm("Are you sure?")) {
                 await supabase.from('fotos').delete().eq('id', btn.dataset.id);
                 const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
@@ -143,7 +167,8 @@ uploadBtn.addEventListener('click', async () => {
     uploadBtn.innerText = "Upload Photos";
     uploadBtn.disabled = false;
     fileInput.value = '';
-    loadPhotos('all');
+    // Después de subir, mostramos la categoría subida o 'Us'
+    loadPhotos(selectedCategory);
 });
 
 // --- 3. FILTROS ---
