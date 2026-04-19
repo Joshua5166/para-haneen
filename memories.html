@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Memories 💌</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body class="home-bg">
+    <header>
+        <a href="index.html" class="back-link">← Back</a>
+        <h1>Our Memories 💌</h1>
+        <p>Write a memory for the box...</p>
+    </header>
+
+    <main class="welcome-container">
+        <div class="upload-section glass-card">
+            <textarea id="memory-input" placeholder="What's a beautiful moment you remember?..." rows="4"></textarea>
+            <select id="memory-author">
+                <option value="Josh">Josh</option>
+                <option value="Haneen">Haneen</option>
+            </select>
+            <button id="save-memory-btn" class="glass-btn">Drop in the Box 📥</button>
+        </div>
+
+        <hr style="margin: 40px auto; width: 50%; opacity: 0.2;">
+
+        <div class="surprise-section">
+            <h2>Feeling nostalgic?</h2>
+            <p>Pull a random memory from our box.</p>
+            <button id="surprise-btn" class="menu-card" style="cursor: pointer; width: 100%; max-width: 300px; margin: 20px auto;">
+                <span class="icon">✨</span>
+                <h3>Surprise Me!</h3>
+            </button>
+        </div>
+    </main>
+
+    <div id="memoryModal" class="modal">
+        <div class="modal-content glass-card" style="padding: 50px;">
+            <span class="close-button" onclick="closeMemoryModal()">&times;</span>
+            <div id="memory-display">
+                <p id="memory-text" style="font-size: 1.2rem; line-height: 1.6; font-style: italic;"></p>
+                <p id="memory-info" style="margin-top: 20px; color: #ff4d94; font-weight: bold;"></p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/memories.js"></script>
+</body>
+</html>
