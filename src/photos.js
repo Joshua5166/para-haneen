@@ -10,28 +10,24 @@ const fileInput = document.getElementById('file-input');
 const uploadBtn = document.getElementById('upload-btn');
 const categorySelect = document.getElementById('category-select');
 
-// Variable global para controlar el lightbox
-let lightbox = null;
+// --- AL PRINCIPIO DE TU ARCHIVO ---
+let lightbox;
 
-// --- FUNCIÓN PARA INICIALIZAR O REFRESCAR EL VISUALIZADOR (LIGHTBOX) ---
 function initLightbox() {
-    // Si ya existe, lo destruimos para limpiar memoria y eventos viejos
-    if (lightbox) {
-        lightbox.destroy();
-    }
+    console.log("Intentando despertar a PhotoSwipe..."); // Revisa esto en F12
     
-    // Creamos uno nuevo con la configuración para que se sienta como App
-    lightbox = new PhotoSwipeLightbox({
+    if (lightbox) lightbox.destroy();
+
+    // Usamos window.PhotoSwipeLightbox para asegurar que lea la librería del HTML
+    lightbox = new window.PhotoSwipeLightbox({
         gallery: '#photo-grid',
         children: 'a.photo-link',
-        pswpModule: PhotoSwipe,
-        // Configuración de UI para que sea suave en móvil
-        showHideAnimationType: 'zoom',
-        padding: { top: 20, bottom: 20, left: 20, right: 20 },
-        escKey: true,
-        arrowKeys: true
+        // Accedemos a la versión global de la librería
+        pswpModule: window.PhotoSwipe 
     });
+    
     lightbox.init();
+    console.log("PhotoSwipe inicializado correctamente ✅");
 }
 
 // --- 1. CARGAR FOTOS ---

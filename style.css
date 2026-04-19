@@ -786,7 +786,15 @@ header {
 
 
 /* --- EFECTO DE FONDO BORROSO (LIGHTBOX) --- */
+/* Forzamos que PhotoSwipe esté por encima de TODO */
+.pswp {
+    z-index: 10000 !important;
+}
 
+/* Evitamos que la imagen "bloquee" el click al enlace */
+.photo-link img {
+    pointer-events: none;
+}
 /* El contenedor del fondo de PhotoSwipe */
 .pswp__bg {
     background: rgba(0, 0, 0, 0.5) !important; /* Fondo oscuro semi-transparente */
