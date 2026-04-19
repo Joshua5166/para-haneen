@@ -1,4 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
+// IMPORTACIÓN DIRECTA (Esto arregla el error de "not defined")
+import PhotoSwipeLightbox from 'photoswipe/lightbox';
+import PhotoSwipe from 'photoswipe';
+import 'photoswipe/style.css'; // Importamos los estilos aquí también
 
 const supabase = createClient(
     import.meta.env.VITE_SUPABASE_URL,
