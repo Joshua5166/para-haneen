@@ -793,7 +793,11 @@ header {
 
 /* Evitamos que la imagen "bloquee" el click al enlace */
 .photo-link img {
-    pointer-events: none;
+    width: 100%;
+    height: 250px; /* O el tamaño que prefieras para el grid */
+    object-fit: cover; /* Esto recorta la foto para que llene el cuadro sin deformarse */
+    border-radius: 8px;
+    display: block;
 }
 /* El contenedor del fondo de PhotoSwipe */
 .pswp__bg {
