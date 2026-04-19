@@ -282,10 +282,11 @@ header {
 
 }
 
-#surprise-photo-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(255, 77, 148, 0.5);
-    background: #ff0066; /* Un rosa más intenso al pasar el mouse */
+.surprise-special {
+    background: linear-gradient(45deg, #ff4d94, #ff85b2) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(255, 77, 148, 0.3);
 }
 
 .photo-card:hover img {
