@@ -41,7 +41,7 @@ header {
 }
 
 /* =========================================
-   2. MENÚ PRINCIPAL (INDEX) - TARJETAS BLANCAS
+   2. MENÚ PRINCIPAL (INDEX)
    ========================================= */
 .welcome-container {
     text-align: center;
@@ -84,49 +84,16 @@ header {
     margin-bottom: 15px;
 }
 
-.menu-card h3 {
-    margin-bottom: 10px;
-}
-
-.menu-card p {
-    font-size: 0.9rem;
-    color: #777;
-    line-height: 1.4;
-}
-
 /* =========================================
-   3. SECCIÓN DE FOTOS (COLLAGE MASONRY)
+   3. SECCIÓN DE FOTOS (COLLAGE & LIGHTBOX)
    ========================================= */
-.filter-bar {
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.filter-btn {
-    padding: 8px 18px;
-    border-radius: 20px;
-    border: 1px solid #ff4d94;
-    background: white;
-    color: #ff4d94;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.filter-btn.active, .filter-btn:hover {
-    background: #ff4d94;
-    color: white;
-}
-
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 15px;
     padding: 20px;
     width: 100%;
-    min-height: 200px; /* Para que el contenedor siempre tenga espacio */
+    min-height: 200px;
 }
 
 .photo-card {
@@ -134,63 +101,47 @@ header {
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.3s ease;
+    background: white;
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.photo-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(255, 77, 148, 0.2);
 }
 
 .photo-link {
     display: block;
     width: 100%;
-    min-height: 150px; /* Evita que colapsen antes de cargar la imagen */
-}
-
-.photo-card:hover img {
-    transform: scale(1.02);
-}
-
-/* Evita que los controles estorben el click de la foto */
-.card-controls {
-    position: relative;
-    z-index: 10;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 5px;
+    min-height: 150px;
+    cursor: zoom-in;
 }
 
 .photo-card img {
     width: 100%;
     height: auto;
-    border-radius: 5px;
+    border-radius: 8px;
     display: block;
+    transition: transform 0.3s ease;
 }
 
-.edit-category {
-    font-size: 0.75rem;
-    padding: 4px;
-    border-radius: 5px;
-    border: 1px solid #ffe4ec;
-    color: #ff4d94;
-    background: white;
-    outline: none;
-    cursor: pointer;
-    flex-grow: 1;
+/* --- EFECTO BORROSO PARA PHOTOSWIPE --- */
+.pswp__bg {
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+}
+
+.pswp__button--arrow--prev, .pswp__button--arrow--next {
+    background-color: rgba(255, 77, 148, 0.2) !important;
+    border-radius: 50%;
 }
 
 /* =========================================
-   4. PLAYLIST Y CANCIONES
+   4. PLAYLIST Y CANCIONES (GLASSMORPHISM)
    ========================================= */
-.upload-section {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    display: inline-flex;
-    flex-direction: column;
-    gap: 10px;
-    box-shadow: 0 4px 15px rgba(255, 77, 148, 0.1);
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 500px;
-    width: 90%;
-}
-
 .songs-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -201,68 +152,11 @@ header {
 }
 
 .song-card {
-    background: white;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease;
-}
-/* Controles de búsqueda y botones */
-.songs-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin: 20px auto;
-    flex-wrap: wrap;
-}
-
-.search-wrapper {
-    position: relative;
-    width: 300px;
-}
-
-#song-search {
-    width: 100%;
-    padding: 12px 20px;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
-    outline: none;
-    transition: 0.3s;
-    box-shadow: 0 4px 15px rgba(255, 77, 148, 0.1);
-}
-
-#song-search:focus {
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 4px 20px rgba(255, 77, 148, 0.2);
-}
-
-.glass-btn {
-    background: rgba(255, 77, 148, 0.8);
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-weight: bold;
-    backdrop-filter: blur(5px);
-    transition: 0.3s;
-}
-
-.glass-btn:hover {
-    transform: scale(1.05);
-    background: #ff4d94;
-}
-
-/* Tarjetas de canciones Glassmorphism */
-.song-card {
-    background: rgba(255, 255, 255, 0.4); /* Transparencia */
-    backdrop-filter: blur(12px); /* Efecto borroso */
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 15px;
+    padding: 20px;
     border-radius: 25px;
     box-shadow: 0 8px 32px rgba(255, 77, 148, 0.1);
     transition: all 0.4s ease;
@@ -275,52 +169,10 @@ header {
 }
 
 .video-thumbnail {
-    border-radius: 18px;
-    overflow: hidden;
-    position: relative;
-}
-
-/* Pie de la tarjeta (Título y borrar) */
-.song-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 5px 0;
-}
-
-.song-title {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #ff4d94;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.delete-song-btn {
-    background: rgba(255, 77, 77, 0.1);
-    color: #ff4d4d;
-    border: none;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.delete-song-btn:hover {
-    background: #ff4d4d;
-    color: white;
-    transform: rotate(90deg);
-}
-.video-thumbnail {
     position: relative;
     width: 100%;
     cursor: pointer;
-    border-radius: 12px;
+    border-radius: 18px;
     overflow: hidden;
 }
 
@@ -344,57 +196,37 @@ header {
     opacity: 1;
 }
 
+.song-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 5px 0;
+}
+
+.song-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ff4d94;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 /* =========================================
-   5. CINEMA (ESTILO NETFLIX)
+   5. CONTROLES Y MODALES
    ========================================= */
-.movie-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 20px;
+.upload-section {
+    background: white;
     padding: 20px;
+    border-radius: 15px;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(255, 77, 148, 0.1);
+    margin-bottom: 30px;
+    max-width: 500px;
+    width: 90%;
 }
 
-.movie-card {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    background: #000;
-}
-
-.movie-card:hover {
-    transform: scale(1.05);
-}
-
-.movie-card img {
-    width: 100%;
-    height: 240px;
-    object-fit: cover;
-    display: block;
-}
-
-.movie-info {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.9));
-    color: white;
-    padding: 10px;
-    font-size: 0.8rem;
-    opacity: 0;
-    transition: opacity 0.3s;
-    text-align: center;
-}
-
-.movie-card:hover .movie-info {
-    opacity: 1;
-}
-
-.rating-stars { color: #ffd700; margin-bottom: 5px; }
-
-/* =========================================
-   6. MODAL Y BOTONES
-   ========================================= */
 .modal {
     display: none;
     position: fixed;
@@ -415,51 +247,19 @@ header {
     text-align: center;
 }
 
-.close-button {
-    position: absolute;
-    top: 10px; right: 15px;
-    color: #ff4d94;
-    font-size: 30px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.video-container {
-    position: relative;
-    padding-bottom: 56.25%;
-    height: 0; overflow: hidden;
-    border-radius: 12px;
-}
-
-.video-container iframe {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-}
-
-.delete-btn, .delete-movie {
-    background: #ff4d4d;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
 /* =========================================
-   7. RESPONSIVO
+   6. RESPONSIVO
    ========================================= */
 @media (max-width: 1024px) {
-    .grid { column-count: 3; }
+    .grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 768px) {
-    .grid { column-count: 2; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
     .main-menu { gap: 20px; }
     .menu-card { width: 90%; max-width: 320px; }
 }
 
 @media (max-width: 480px) {
-    .grid { column-count: 1; }
+    .grid { grid-template-columns: 1fr; }
 }
