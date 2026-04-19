@@ -59,32 +59,42 @@ async function loadPhotos(filter = 'all') {
         return;
     }
 
-    data.forEach(foto => {
-        const catLabel = foto.categoria || 'Us';
-        const card = document.createElement('div');
-        card.className = `photo-card`;
-        
-        card.innerHTML = `
-        <a href="${foto.url}" 
-           class="photo-link" 
-           onclick="event.preventDefault();" 
-           data-pswp-width="1200" 
-           data-pswp-height="1600">
-            <img src="${foto.url}" alt="Memory" loading="lazy">
-        </a>
-        <div class="card-controls">
-            <select class="edit-category" data-id="${foto.id}">
-                <option value="Us" ${catLabel === 'Us' ? 'selected' : ''}>Us</option>
-                <option value="Roblox" ${catLabel === 'Roblox' ? 'selected' : ''}>Roblox</option>
-                <option value="Haneen" ${catLabel === 'Haneen' ? 'selected' : ''}>Haneen</option>
-                <option value="Josh" ${catLabel === 'Josh' ? 'selected' : ''}>Josh</option>
-                <option value="Movies" ${catLabel === 'Movies' ? 'selected' : ''}>Movies</option> 
-            </select>
-            <button class="delete-btn" data-id="${foto.id}">Delete</button>
-        </div>
-        `;
-        photoGrid.appendChild(card);
-    });
+data.forEach(foto => {
+    const catLabel = foto.categoria || 'Us';
+    const card = document.createElement('div');
+    card.className = `photo-card`;
+    
+    // 1. Creamos el elemento de la tarjeta
+    card.innerHTML = `
+    <a href="${foto.url}" 
+       class="photo-link" 
+       onclick="event.preventDefault();">
+        <img src="${foto.url}" alt="Memory" loading="lazy">
+    </a>
+    <div class="card-controls">
+        <select class="edit-category" data-id="${foto.id}">
+            <option value="Us" ${catLabel === 'Us' ? 'selected' : ''}>Us</option>
+            <option value="Roblox" ${catLabel === 'Roblox' ? 'selected' : ''}>Roblox</option>
+            <option value="Haneen" ${catLabel === 'Haneen' ? 'selected' : ''}>Haneen</option>
+            <option value="Josh" ${catLabel === 'Josh' ? 'selected' : ''}>Josh</option>
+            <option value="Movies" ${catLabel === 'Movies' ? 'selected' : ''}>Movies</option> 
+        </select>
+        <button class="delete-btn" data-id="${foto.id}">Delete</button>
+    </div>
+    `;
+
+    // 2. MAGIA: Detectar tamaño real de la foto
+    const img = new Image();
+    img.src = foto.url;
+    img.onload = () => {
+        const link = card.querySelector('.photo-link');
+        // Asignamos el ancho y alto real de la imagen al enlace
+        link.setAttribute('data-pswp-width', img.width);
+        link.setAttribute('data-pswp-height', img.height);
+    };
+
+    photoGrid.appendChild(card);
+});
 
     setupCardEvents();
     
