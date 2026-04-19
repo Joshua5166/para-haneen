@@ -785,7 +785,35 @@ header {
 .rating-stars { color: #ffd700; margin-bottom: 5px; }
 
 
+/* --- EFECTO DE FONDO BORROSO (LIGHTBOX) --- */
 
+/* El contenedor del fondo de PhotoSwipe */
+.pswp__bg {
+    background: rgba(0, 0, 0, 0.5) !important; /* Fondo oscuro semi-transparente */
+    backdrop-filter: blur(15px) !important;    /* El efecto de desenfoque */
+    -webkit-backdrop-filter: blur(15px) !important;
+}
+
+/* Hacer las flechas de navegación más visibles y elegantes */
+.pswp__button--arrow--prev, 
+.pswp__button--arrow--next {
+    background-color: rgba(255, 77, 148, 0.3) !important; /* Rosa sutil */
+    border-radius: 50%;
+    width: 60px !important;
+    height: 60px !important;
+    margin: 0 20px;
+}
+
+.pswp__button--arrow--prev:hover, 
+.pswp__button--arrow--next:hover {
+    background-color: #ff4d94 !important;
+}
+
+/* Animación de la foto al abrirse */
+.pswp__img {
+    border-radius: 15px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
 /* =========================================
 
    6. MODAL Y BOTONES

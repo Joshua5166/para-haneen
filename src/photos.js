@@ -10,9 +10,9 @@ const fileInput = document.getElementById('file-input');
 const uploadBtn = document.getElementById('upload-btn');
 const categorySelect = document.getElementById('category-select');
 
-let lightbox; // Variable global para el lightbox
+let lightbox;
 
-// Función para inicializar PhotoSwipe
+// --- FUNCIÓN PARA INICIALIZAR EL VISUALIZADOR (LIGHTBOX) ---
 function initLightbox() {
     if (lightbox) {
         lightbox.destroy();
@@ -20,7 +20,10 @@ function initLightbox() {
     lightbox = new PhotoSwipeLightbox({
         gallery: '#photo-grid',
         children: 'a.photo-link',
-        pswpModule: PhotoSwipe
+        pswpModule: PhotoSwipe,
+        // Configuración para que se sienta como una App
+        padding: { top: 20, bottom: 20, left: 20, right: 20 },
+        showHideAnimationType: 'zoom'
     });
     lightbox.init();
 }
@@ -51,7 +54,7 @@ async function loadPhotos(filter = 'all') {
         
         const card = document.createElement('div');
         card.className = `photo-card`;
-        // Envolvemos la imagen en el link <a> necesario para PhotoSwipe
+        // IMPORTANTE: El data-pswp-width/height permite que la imagen se abra correctamente
         card.innerHTML = `
             <a href="${foto.url}" 
                class="photo-link" 
@@ -74,10 +77,10 @@ async function loadPhotos(filter = 'all') {
         photoGrid.appendChild(card);
     });
 
-    // Conectar eventos de los nuevos elementos
+    // Conectar eventos (Borrar/Editar)
     setupCardEvents();
     
-    // Inicializar el visualizador después de cargar las imágenes
+    // Lanzar el visualizador con las nuevas fotos
     initLightbox();
 }
 
@@ -96,7 +99,7 @@ function setupCardEvents() {
     // Evento: Borrar Foto
     document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.onclick = async (e) => {
-            e.preventDefault(); // Evita que el click abra la foto
+            e.preventDefault(); // Evita que se abra la foto al hacer clic en el botón
             if(confirm("Are you sure?")) {
                 await supabase.from('fotos').delete().eq('id', btn.dataset.id);
                 const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
