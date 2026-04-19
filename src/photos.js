@@ -1,40 +1,43 @@
 import { createClient } from '@supabase/supabase-js'
-// IMPORTACIÓN DIRECTA (Esto arregla el error de "not defined")
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import PhotoSwipe from 'photoswipe';
-import 'photoswipe/style.css'; // Importamos los estilos aquí también
+import 'photoswipe/style.css'; 
 
+// 1. Configuración de Supabase
 const supabase = createClient(
     import.meta.env.VITE_SUPABASE_URL,
     import.meta.env.VITE_SUPABASE_ANON_KEY
 )
 
+// 2. Referencias al DOM
 const photoGrid = document.getElementById('photo-grid');
 const fileInput = document.getElementById('file-input');
 const uploadBtn = document.getElementById('upload-btn');
 const categorySelect = document.getElementById('category-select');
 
-// --- AL PRINCIPIO DE TU ARCHIVO ---
 let lightbox;
 
+// 3. Función para inicializar el visualizador
 function initLightbox() {
-    console.log("Intentando despertar a PhotoSwipe..."); // Revisa esto en F12
+    console.log("Despertando PhotoSwipe... 🚀");
     
-    if (lightbox) lightbox.destroy();
+    if (lightbox) {
+        lightbox.destroy();
+    }
 
-    // Usamos window.PhotoSwipeLightbox para asegurar que lea la librería del HTML
-    lightbox = new window.PhotoSwipeLightbox({
+    lightbox = new PhotoSwipeLightbox({
         gallery: '#photo-grid',
         children: 'a.photo-link',
-        // Accedemos a la versión global de la librería
-        pswpModule: window.PhotoSwipe 
+        pswpModule: PhotoSwipe,
+        showHideAnimationType: 'zoom',
+        padding: { top: 20, bottom: 20, left: 20, right: 20 }
     });
     
     lightbox.init();
-    console.log("PhotoSwipe inicializado correctamente ✅");
+    console.log("PhotoSwipe listo ✅");
 }
 
-// --- 1. CARGAR FOTOS ---
+// 4. Cargar fotos de Supabase
 async function loadPhotos(filter = 'all') {
     let query = supabase.from('fotos').select('*').order('created_at', { ascending: false });
     
@@ -52,62 +55,48 @@ async function loadPhotos(filter = 'all') {
     
     if (!data || data.length === 0) {
         photoGrid.innerHTML = '<p style="text-align:center; color:#ff4d94; grid-column: 1/-1; padding: 50px;">No memories found here yet ❤️</p>';
-        // Incluso si no hay fotos, matamos el lightbox viejo si existe
         if (lightbox) lightbox.destroy();
         return;
     }
 
     data.forEach(foto => {
         const catLabel = foto.categoria || 'Us';
-        
         const card = document.createElement('div');
         card.className = `photo-card`;
         
-        // --- AQUÍ ESTÁ EL TRUCO PARA QUE NO SE ABRA EN OTRA PÁGINA ---
-        // 1. Aseguramos que el link <a> tenga la clase 'photo-link'
-        // 2. data-pswp-width/height genéricos para que PhotoSwipe los calcule al cargar
         card.innerHTML = `
         <a href="${foto.url}" 
-        class="photo-link" 
-        onclick="event.preventDefault();" 
-        data-pswp-width="1200" 
-        data-pswp-height="1600">
+           class="photo-link" 
+           onclick="event.preventDefault();" 
+           data-pswp-width="1200" 
+           data-pswp-height="1600">
             <img src="${foto.url}" alt="Memory" loading="lazy">
         </a>
-            <div class="card-controls">
-                <select class="edit-category" data-id="${foto.id}">
-                    <option value="Us" ${catLabel === 'Us' ? 'selected' : ''}>Us</option>
-                    <option value="Roblox" ${catLabel === 'Roblox' ? 'selected' : ''}>Roblox</option>
-                    <option value="Haneen" ${catLabel === 'Haneen' ? 'selected' : ''}>Haneen</option>
-                    <option value="Josh" ${catLabel === 'Josh' ? 'selected' : ''}>Josh</option>
-                    <option value="Movies" ${catLabel === 'Movies' ? 'selected' : ''}>Movies</option> 
-                </select>
-                <button class="delete-btn" data-id="${foto.id}">Delete</button>
-            </div>
+        <div class="card-controls">
+            <select class="edit-category" data-id="${foto.id}">
+                <option value="Us" ${catLabel === 'Us' ? 'selected' : ''}>Us</option>
+                <option value="Roblox" ${catLabel === 'Roblox' ? 'selected' : ''}>Roblox</option>
+                <option value="Haneen" ${catLabel === 'Haneen' ? 'selected' : ''}>Haneen</option>
+                <option value="Josh" ${catLabel === 'Josh' ? 'selected' : ''}>Josh</option>
+                <option value="Movies" ${catLabel === 'Movies' ? 'selected' : ''}>Movies</option> 
+            </select>
+            <button class="delete-btn" data-id="${foto.id}">Delete</button>
+        </div>
         `;
         photoGrid.appendChild(card);
     });
 
-    // 3. ¡BLINDAJE TOTAL! Prevenimos el comportamiento por defecto de TODOS los enlaces photo-link
-    // Esto asegura que NO se abran en otra pestaña.
-    document.querySelectorAll('.photo-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            // Si PhotoSwipe está cargado, prevenimos que el navegador maneje el clic
-            if (PhotoSwipe && PhotoSwipeLightbox) {
-                e.preventDefault();
-            }
-        });
-    });
-
-    // Conectar eventos de los nuevos elementos (cambiar categoría y borrar)
     setupCardEvents();
     
-    // 4. Inicializar el visualizador DESPUÉS de haber blindado los links
-    initLightbox();
+    // Pequeño delay para que el collage se renderice antes de activar PhotoSwipe
+    setTimeout(() => {
+        initLightbox();
+    }, 100);
 }
 
+// 5. Eventos de las tarjetas (Borrar y Editar)
 function setupCardEvents() {
-    // Evento: Cambiar categoría
+    // Cambiar categoría
     document.querySelectorAll('.edit-category').forEach(select => {
         select.onchange = async (e) => {
             const id = e.target.dataset.id;
@@ -118,22 +107,23 @@ function setupCardEvents() {
         };
     });
 
-    // Evento: Borrar Foto
+    // Borrar foto
     document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.onclick = async (e) => {
-            // e.preventDefault() aquí es crucial para que al borrar no se abra la foto
             e.preventDefault(); 
-            e.stopPropagation(); // Previene que el evento suba al link <a>
+            e.stopPropagation(); 
             if(confirm("Are you sure?")) {
-                await supabase.from('fotos').delete().eq('id', btn.dataset.id);
-                const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
-                loadPhotos(currentFilter);
+                const { error } = await supabase.from('fotos').delete().eq('id', btn.dataset.id);
+                if (!error) {
+                    const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
+                    loadPhotos(currentFilter);
+                }
             }
         };
     });
 }
 
-// --- 2. SUBIDA MÚLTIPLE ---
+// 6. Lógica de Subida Múltiple (Cloudinary + Supabase)
 uploadBtn.addEventListener('click', async () => {
     const files = fileInput.files;
     const selectedCategory = categorySelect.value;
@@ -156,7 +146,8 @@ uploadBtn.addEventListener('click', async () => {
             if (fileData.secure_url) {
                 await supabase.from('fotos').insert([{
                     url: fileData.secure_url,
-                    categoria: selectedCategory
+                    categoria: selectedCategory,
+                    descripcion: 'A special memory'
                 }]);
             }
         } catch (err) {
@@ -167,11 +158,10 @@ uploadBtn.addEventListener('click', async () => {
     uploadBtn.innerText = "Upload Photos";
     uploadBtn.disabled = false;
     fileInput.value = '';
-    // Después de subir, mostramos la categoría subida o 'Us'
-    loadPhotos(selectedCategory);
+    loadPhotos('all');
 });
 
-// --- 3. FILTROS ---
+// 7. Lógica de Filtros
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -180,5 +170,5 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     });
 });
 
-// Carga inicial
+// 8. Carga inicial
 loadPhotos();
