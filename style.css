@@ -851,26 +851,28 @@ header {
 
 
 .modal-content {
-
     background-color: #fff;
-
-    margin: 15vh auto;
-
-    padding: 30px 20px 20px;
-
+    margin: 10vh auto; /* Un poco más arriba para dar espacio */
+    padding: 50px 30px; /* Buen padding interno */
     width: 90%;
-
     max-width: 500px;
-
     border-radius: 20px;
-
     position: relative;
-
     text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 
+    /* --- ESTO ES LO QUE ARREGLA EL PROBLEMA --- */
+    max-height: 80vh; /* Que no ocupe más del 80% de la altura de la pantalla */
+    overflow-y: auto; /* Si el texto es largo, activa el scroll vertical */
 }
-
-
+#memory-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    font-style: italic;
+    color: #444;
+    white-space: pre-wrap; /* Mantiene los saltos de línea originales si los hay */
+    margin-bottom: 20px;
+}
 
 .close-button {
 
