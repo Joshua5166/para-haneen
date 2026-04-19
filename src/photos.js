@@ -1,14 +1,22 @@
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
+    import.meta.env.VITE_SUPABASE_URL,
+    import.meta.env.VITE_SUPABASE_ANON_KEY
 )
 
 const photoGrid = document.getElementById('photo-grid');
 const fileInput = document.getElementById('file-input');
 const uploadBtn = document.getElementById('upload-btn');
 const categorySelect = document.getElementById('category-select');
+
+// Inicializar el Lightbox de PhotoSwipe
+const lightbox = new PhotoSwipeLightbox({
+    gallery: '#photo-grid',
+    children: 'a.photo-link',
+    pswpModule: PhotoSwipe
+});
+lightbox.init();
 
 // --- 1. LOAD PHOTOS ---
 async function loadPhotos(filter = 'all') {
@@ -32,8 +40,16 @@ async function loadPhotos(filter = 'all') {
         
         const card = document.createElement('div');
         card.className = `photo-card`;
+        // Envolvemos la imagen en un <a> para PhotoSwipe
+        // Usamos data-pswp-width/height para que la librería sepa las dimensiones
         card.innerHTML = `
-            <img src="${foto.url}" alt="Memory">
+            <a href="${foto.url}" 
+               target="_blank" 
+               class="photo-link" 
+               data-pswp-width="1200" 
+               data-pswp-height="1600">
+                <img src="${foto.url}" alt="Memory" loading="lazy">
+            </a>
             <div class="card-controls">
                 <select class="edit-category" data-id="${foto.id}">
                     <option value="Us" ${catLabel === 'Us' ? 'selected' : ''}>Us</option>
@@ -48,46 +64,33 @@ async function loadPhotos(filter = 'all') {
         photoGrid.appendChild(card);
     });
 
-    // Event: Quick category update from the card
+    // Event: Quick category update
     document.querySelectorAll('.edit-category').forEach(select => {
         select.onchange = async (e) => {
             const id = e.target.dataset.id;
             const newCategory = e.target.value;
-
-            const { error } = await supabase
-                .from('fotos')
-                .update({ categoria: newCategory })
-                .eq('id', id);
-
-            if (error) {
-                alert("Error moving photo");
-            } else {
-                // Refresh the current view
-                const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
-                loadPhotos(currentFilter);
-            }
+            const { error } = await supabase.from('fotos').update({ categoria: newCategory }).eq('id', id);
+            if (error) alert("Error moving photo");
+            else loadPhotos(document.querySelector('.filter-btn.active').dataset.filter);
         };
     });
 
     // Event: Delete Photo
     document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.onclick = async () => {
+        btn.onclick = async (e) => {
+            e.stopPropagation(); // Evita que se abra la foto al querer borrarla
             if(confirm("Are you sure you want to delete this memory?")) {
                 const { error } = await supabase.from('fotos').delete().eq('id', btn.dataset.id);
-                if (!error) {
-                    const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
-                    loadPhotos(currentFilter);
-                }
+                if (!error) loadPhotos(document.querySelector('.filter-btn.active').dataset.filter);
             }
         };
     });
 }
 
-// --- 2. MULTIPLE UPLOAD TO CLOUDINARY & SUPABASE ---
+// --- 2. MULTIPLE UPLOAD ---
 uploadBtn.addEventListener('click', async () => {
     const files = fileInput.files;
     const selectedCategory = categorySelect.value;
-
     if (files.length === 0) return alert("Please select some photos first!");
 
     uploadBtn.innerText = "Uploading...";
@@ -96,7 +99,7 @@ uploadBtn.addEventListener('click', async () => {
     for (let i = 0; i < files.length; i++) {
         const formData = new FormData();
         formData.append('file', files[i]);
-        formData.append('upload_preset', 'ml_default_hj'); // Your verified preset
+        formData.append('upload_preset', 'ml_default_hj');
 
         try {
             const res = await fetch('https://api.cloudinary.com/v1_1/dgtnqy7zn/image/upload', {
@@ -104,9 +107,7 @@ uploadBtn.addEventListener('click', async () => {
                 body: formData
             });
             const fileData = await res.json();
-
             if (fileData.secure_url) {
-                // Inserting only existing columns in your Supabase table
                 await supabase.from('fotos').insert([{
                     url: fileData.secure_url,
                     categoria: selectedCategory,
@@ -114,20 +115,17 @@ uploadBtn.addEventListener('click', async () => {
                 }]);
             }
         } catch (err) {
-            console.error("Upload error at index " + i, err);
+            console.error("Upload error", err);
         }
     }
 
     uploadBtn.innerText = "Upload Photos";
     uploadBtn.disabled = false;
     fileInput.value = '';
-    
-    // Refresh to show new photos in the 'all' or selected filter
-    const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
-    loadPhotos(activeFilter);
+    loadPhotos(document.querySelector('.filter-btn.active').dataset.filter);
 });
 
-// --- 3. FILTER BUTTONS LOGIC ---
+// --- 3. FILTER LOGIC ---
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -136,5 +134,4 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     });
 });
 
-// Initial load
 loadPhotos();

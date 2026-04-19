@@ -130,19 +130,29 @@ header {
 }
 
 .photo-card {
-    break-inside: avoid;
-    display: inline-block;
-    width: 100%;
-    background: white;
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
     transition: transform 0.3s ease;
 }
 
-.photo-card:hover {
-    transform: translateY(-5px);
+.photo-link img {
+    width: 100%;
+    display: block;
+    border-radius: 8px; /* Ajusta a tu gusto */
+    transition: transform 0.3s ease;
+}
+
+.photo-card:hover img {
+    transform: scale(1.02);
+}
+
+/* Evita que los controles estorben el click de la foto */
+.card-controls {
+    position: relative;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px;
 }
 
 .photo-card img {
@@ -150,14 +160,6 @@ header {
     height: auto;
     border-radius: 5px;
     display: block;
-}
-
-.card-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-    gap: 5px;
 }
 
 .edit-category {
