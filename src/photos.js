@@ -10,15 +10,22 @@ const fileInput = document.getElementById('file-input');
 const uploadBtn = document.getElementById('upload-btn');
 const categorySelect = document.getElementById('category-select');
 
-// Inicializar el Lightbox de PhotoSwipe
-const lightbox = new PhotoSwipeLightbox({
-    gallery: '#photo-grid',
-    children: 'a.photo-link',
-    pswpModule: PhotoSwipe
-});
-lightbox.init();
+let lightbox; // Variable global para el lightbox
 
-// --- 1. LOAD PHOTOS ---
+// Función para inicializar PhotoSwipe
+function initLightbox() {
+    if (lightbox) {
+        lightbox.destroy();
+    }
+    lightbox = new PhotoSwipeLightbox({
+        gallery: '#photo-grid',
+        children: 'a.photo-link',
+        pswpModule: PhotoSwipe
+    });
+    lightbox.init();
+}
+
+// --- 1. CARGAR FOTOS ---
 async function loadPhotos(filter = 'all') {
     let query = supabase.from('fotos').select('*').order('created_at', { ascending: false });
     
@@ -27,12 +34,16 @@ async function loadPhotos(filter = 'all') {
     }
 
     const { data, error } = await query;
-    if (error) return console.error(error);
+    if (error) {
+        console.error("Error de Supabase:", error);
+        return;
+    }
 
     photoGrid.innerHTML = '';
     
-    if (data.length === 0) {
+    if (!data || data.length === 0) {
         photoGrid.innerHTML = '<p style="text-align:center; color:#ff4d94; grid-column: 1/-1;">No memories found here yet ❤️</p>';
+        return;
     }
 
     data.forEach(foto => {
@@ -40,14 +51,13 @@ async function loadPhotos(filter = 'all') {
         
         const card = document.createElement('div');
         card.className = `photo-card`;
-        // Envolvemos la imagen en un <a> para PhotoSwipe
-        // Usamos data-pswp-width/height para que la librería sepa las dimensiones
+        // Envolvemos la imagen en el link <a> necesario para PhotoSwipe
         card.innerHTML = `
             <a href="${foto.url}" 
-               target="_blank" 
                class="photo-link" 
                data-pswp-width="1200" 
-               data-pswp-height="1600">
+               data-pswp-height="1600"
+               target="_blank">
                 <img src="${foto.url}" alt="Memory" loading="lazy">
             </a>
             <div class="card-controls">
@@ -56,7 +66,7 @@ async function loadPhotos(filter = 'all') {
                     <option value="Roblox" ${catLabel === 'Roblox' ? 'selected' : ''}>Roblox</option>
                     <option value="Haneen" ${catLabel === 'Haneen' ? 'selected' : ''}>Haneen</option>
                     <option value="Josh" ${catLabel === 'Josh' ? 'selected' : ''}>Josh</option>
-                    <option value="Movies" ${catLabel === 'Movies' ? 'selected' : ''}>Movies 🍿</option> 
+                    <option value="Movies" ${catLabel === 'Movies' ? 'selected' : ''}>Movies</option> 
                 </select>
                 <button class="delete-btn" data-id="${foto.id}">Delete</button>
             </div>
@@ -64,34 +74,43 @@ async function loadPhotos(filter = 'all') {
         photoGrid.appendChild(card);
     });
 
-    // Event: Quick category update
+    // Conectar eventos de los nuevos elementos
+    setupCardEvents();
+    
+    // Inicializar el visualizador después de cargar las imágenes
+    initLightbox();
+}
+
+function setupCardEvents() {
+    // Evento: Cambiar categoría
     document.querySelectorAll('.edit-category').forEach(select => {
         select.onchange = async (e) => {
             const id = e.target.dataset.id;
             const newCategory = e.target.value;
-            const { error } = await supabase.from('fotos').update({ categoria: newCategory }).eq('id', id);
-            if (error) alert("Error moving photo");
-            else loadPhotos(document.querySelector('.filter-btn.active').dataset.filter);
+            await supabase.from('fotos').update({ categoria: newCategory }).eq('id', id);
+            const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            loadPhotos(currentFilter);
         };
     });
 
-    // Event: Delete Photo
+    // Evento: Borrar Foto
     document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.onclick = async (e) => {
-            e.stopPropagation(); // Evita que se abra la foto al querer borrarla
-            if(confirm("Are you sure you want to delete this memory?")) {
-                const { error } = await supabase.from('fotos').delete().eq('id', btn.dataset.id);
-                if (!error) loadPhotos(document.querySelector('.filter-btn.active').dataset.filter);
+            e.preventDefault(); // Evita que el click abra la foto
+            if(confirm("Are you sure?")) {
+                await supabase.from('fotos').delete().eq('id', btn.dataset.id);
+                const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
+                loadPhotos(currentFilter);
             }
         };
     });
 }
 
-// --- 2. MULTIPLE UPLOAD ---
+// --- 2. SUBIDA MÚLTIPLE ---
 uploadBtn.addEventListener('click', async () => {
     const files = fileInput.files;
     const selectedCategory = categorySelect.value;
-    if (files.length === 0) return alert("Please select some photos first!");
+    if (files.length === 0) return alert("Select photos first!");
 
     uploadBtn.innerText = "Uploading...";
     uploadBtn.disabled = true;
@@ -110,8 +129,7 @@ uploadBtn.addEventListener('click', async () => {
             if (fileData.secure_url) {
                 await supabase.from('fotos').insert([{
                     url: fileData.secure_url,
-                    categoria: selectedCategory,
-                    descripcion: 'A special memory'
+                    categoria: selectedCategory
                 }]);
             }
         } catch (err) {
@@ -122,10 +140,10 @@ uploadBtn.addEventListener('click', async () => {
     uploadBtn.innerText = "Upload Photos";
     uploadBtn.disabled = false;
     fileInput.value = '';
-    loadPhotos(document.querySelector('.filter-btn.active').dataset.filter);
+    loadPhotos('all');
 });
 
-// --- 3. FILTER LOGIC ---
+// --- 3. FILTROS ---
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -134,4 +152,5 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     });
 });
 
+// Carga inicial
 loadPhotos();
