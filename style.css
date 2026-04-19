@@ -261,15 +261,13 @@ header {
 
 
 .photo-card {
-
-    position: relative;
-
-    overflow: hidden;
-
-    cursor: pointer;
-
-    transition: transform 0.3s ease;
-
+    background: white;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 
@@ -297,15 +295,11 @@ header {
 /* Evita que los controles estorben el click de la foto */
 
 .card-controls {
-
-    position: relative;
-
-    z-index: 10;
-
-    background: rgba(255, 255, 255, 0.9);
-
-    padding: 5px;
-
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+    margin-top: auto; /* Empuja los controles al fondo si la tarjeta crece */
 }
 
 
@@ -794,8 +788,9 @@ header {
 /* Evitamos que la imagen "bloquee" el click al enlace */
 .photo-link img {
     width: 100%;
-    height: 250px; /* O el tamaño que prefieras para el grid */
-    object-fit: cover; /* Esto recorta la foto para que llene el cuadro sin deformarse */
+    /* Esto obliga a que la imagen sea un cuadrado perfecto o un poster vertical */
+    aspect-ratio: 3 / 4; /* Úsalo 1/1 para cuadrados o 3/4 para estilo poster de película */
+    object-fit: cover; 
     border-radius: 8px;
     display: block;
 }
