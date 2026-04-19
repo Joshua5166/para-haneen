@@ -67,13 +67,13 @@ async function loadPhotos(filter = 'all') {
         // 1. Aseguramos que el link <a> tenga la clase 'photo-link'
         // 2. data-pswp-width/height genéricos para que PhotoSwipe los calcule al cargar
         card.innerHTML = `
-            <a href="${foto.url}" 
-               class="photo-link" 
-               data-pswp-width="1200" 
-               data-pswp-height="1600"
-               target="_blank">
-                <img src="${foto.url}" alt="Memory" loading="lazy">
-            </a>
+        <a href="${foto.url}" 
+        class="photo-link" 
+        onclick="event.preventDefault();" 
+        data-pswp-width="1200" 
+        data-pswp-height="1600">
+            <img src="${foto.url}" alt="Memory" loading="lazy">
+        </a>
             <div class="card-controls">
                 <select class="edit-category" data-id="${foto.id}">
                     <option value="Us" ${catLabel === 'Us' ? 'selected' : ''}>Us</option>
