@@ -182,3 +182,36 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 
 // 8. Carga inicial
 loadPhotos();
+// --- LÓGICA DE SORPRENDEME PARA FOTOS ---
+const surprisePhotoBtn = document.getElementById('surprise-photo-btn');
+
+surprisePhotoBtn.addEventListener('click', async () => {
+    // 1. Obtenemos todas las fotos de Supabase
+    const { data, error } = await supabase.from('fotos').select('*');
+
+    if (error || !data || data.length === 0) {
+        return alert("The gallery is empty! Add some photos first ❤️");
+    }
+
+    // 2. Elegimos una al azar
+    const randomIdx = Math.floor(Math.random() * data.length);
+    const randomPhoto = data[randomIdx];
+
+    // 3. Abrir PhotoSwipe con esa foto específica
+    // Creamos un array con el formato que PhotoSwipe necesita
+    const slide = {
+        src: randomPhoto.url,
+        msrc: randomPhoto.url,
+        w: 1200, // Estos se ajustan solos al cargar
+        h: 1600
+    };
+
+    // Lanzamos PhotoSwipe manualmente
+    const pswp = new PhotoSwipe({
+        dataSource: [slide],
+        pswpModule: PhotoSwipe,
+        showHideAnimationType: 'zoom'
+    });
+    
+    pswp.init();
+});
