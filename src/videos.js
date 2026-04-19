@@ -62,29 +62,37 @@ uploadBtn.addEventListener('click', async () => {
         formData.append('upload_preset', 'ml_default_hj'); 
 
         try {
-            // Importante: Endpoint de /video/upload
+            // 1. Subir a Cloudinary
             const res = await fetch('https://api.cloudinary.com/v1_1/dgtnqy7zn/video/upload', {
                 method: 'POST',
                 body: formData
             });
             const data = await res.json();
 
+            // 2. Insertar en Supabase si la subida fue exitosa
             if (data.secure_url) {
-                await supabase.from('videos').insert([{ 
-                    url: data.secure_url,
-                    categoria: 'General' // Puedes añadir un select de categoría si gustas
-                }]);
+                const { error: insertError } = await supabase
+                    .from('videos')
+                    .insert([{ 
+                        url: data.secure_url 
+                    }]);
+
+                if (insertError) {
+                    console.error("Error al insertar en Supabase:", insertError);
+                } else {
+                    console.log(`Video ${i + 1} guardado correctamente ✅`);
+                }
             }
         } catch (err) {
-            console.error("Error uploading file " + (i + 1), err);
+            console.error("Error crítico en el proceso:", err);
         }
-    }
+    } // <-- Aquí cierra el ciclo FOR
 
-    // Resetear interfaz
+    // 3. Resetear interfaz después de que terminaron TODOS los videos
     uploadBtn.innerText = "Upload Videos";
     uploadBtn.disabled = false;
     videoInput.value = '';
     loadVideos();
-});
+}); // <-- Aquí cierra el EventListener
 
 loadVideos();
