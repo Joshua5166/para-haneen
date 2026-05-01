@@ -32,10 +32,15 @@
             </button>
         </div>
 
-        <hr style="margin: 50px auto; width: 60%; opacity: 0.2;">
+        <div class="scroll-incentive" onclick="document.getElementById('memories-box-heading').scrollIntoView({ behavior: 'smooth' });">
+            <p>Or scroll down to see the whole collection</p>
+            <div class="scroll-arrow">↓</div>
+        </div>
+
+        <hr style="margin: 30px auto; width: 60%; opacity: 0.2;">
 
         <div class="all-memories-section" style="max-width: 1000px; margin: 0 auto; padding: 0 20px 50px;">
-            <h2 style="color: #ff4d94; margin-bottom: 10px;">The Memory Box 📮</h2>
+            <h2 id="memories-box-heading" style="color: #ff4d94; margin-bottom: 10px;">The Memory Box 📮</h2>
             <p style="margin-bottom: 30px; color: #666;">Click on any letter to read its content</p>
             <div id="memories-list" class="grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;"></div>
         </div>
